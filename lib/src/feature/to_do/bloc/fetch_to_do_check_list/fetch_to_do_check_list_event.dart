@@ -7,6 +7,10 @@ sealed class FetchToDoCheckListEvent extends Equatable {
     Completer? completer,
   }) = _ToDoCheckListFetch;
 
+  const factory FetchToDoCheckListEvent.update({
+    required ToDoEntity toDoEntity,
+  }) = _ToDoCheckListUpdate;
+
   @override
   List<Object?> get props => [];
 }
@@ -20,4 +24,15 @@ final class _ToDoCheckListFetch extends FetchToDoCheckListEvent {
 
   @override
   List<Object?> get props => [completer];
+}
+
+final class _ToDoCheckListUpdate extends FetchToDoCheckListEvent {
+  const _ToDoCheckListUpdate({
+    required this.toDoEntity,
+  });
+
+  final ToDoEntity toDoEntity;
+
+  @override
+  List<Object?> get props => [toDoEntity];
 }

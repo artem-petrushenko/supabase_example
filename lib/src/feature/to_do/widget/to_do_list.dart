@@ -11,9 +11,7 @@ class ToDoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FetchToDoListBloc(
-        toDoRepository: DependenciesScope.of(context).toDoRepository,
-      )..add(const FetchToDoListEvent.fetch()),
+      create: (context) => DependenciesScope.of(context).toDoListBloc..add(FetchToDoListEvent.fetch()),
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: () {

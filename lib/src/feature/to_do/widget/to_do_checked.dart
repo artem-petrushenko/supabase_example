@@ -10,10 +10,8 @@ class ToDoChecked extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FetchToDoCheckListBloc(
-        toDoRepository: DependenciesScope.of(context).toDoRepository,
-      )..add(const FetchToDoCheckListEvent.fetch()),
+    return BlocProvider.value(
+      value: DependenciesScope.of(context).toDoCheckListBloc..add(const FetchToDoCheckListEvent.fetch()),
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: () {

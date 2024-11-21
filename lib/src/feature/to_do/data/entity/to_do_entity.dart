@@ -17,4 +17,20 @@ class ToDoEntity extends Equatable {
 
   @override
   List<Object?> get props => [id, title, description, status, createdAt];
+
+  ToDoEntity copyWith({
+    int? id,
+    String? title,
+    String? description,
+    bool? status,
+    DateTime? createdAt,
+  }) {
+    return ToDoEntity(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

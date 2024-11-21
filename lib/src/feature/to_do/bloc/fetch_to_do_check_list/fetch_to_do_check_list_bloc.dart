@@ -17,6 +17,7 @@ class FetchToDoCheckListBloc extends Bloc<FetchToDoCheckListEvent, FetchToDoChec
     on<FetchToDoCheckListEvent>(
       (event, emit) => switch (event) {
         _ToDoCheckListFetch() => _onToDoCheckListFetch(event, emit),
+        _ToDoCheckListUpdate() => _onToDoCheckListUpdate(event, emit),
       },
     );
   }
@@ -41,6 +42,23 @@ class FetchToDoCheckListBloc extends Bloc<FetchToDoCheckListEvent, FetchToDoChec
       emit(FetchToDoCheckListState.failure(message: e.toString()));
     } finally {
       event.completer?.complete();
+    }
+  }
+
+  Future<void> _onToDoCheckListUpdate(
+      _ToDoCheckListUpdate event,
+      Emitter<FetchToDoCheckListState> emit,
+      ) async {
+    if (state.isLoading) return;
+    final oldToDos = state.toDos;
+    try {
+      final toDos = oldToDos.where((toDo) => toDo.id != event.toDoEntity.id).toList();
+      if (event.toDoEntity.status) {
+        toDos.add(event.toDoEntity);
+      }
+      emit(FetchToDoCheckListState.idle(toDos: toDos));
+    } catch (e) {
+      emit(FetchToDoCheckListState.failure(message: e.toString(), toDos: oldToDos));
     }
   }
 }

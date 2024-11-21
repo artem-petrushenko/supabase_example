@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_example/src/feature/initialization/widget/dependencies_scope.dart';
 import 'package:supabase_example/src/feature/to_do/bloc/update_to_do/update_to_do_bloc.dart';
 import 'package:supabase_example/src/feature/to_do/data/entity/to_do_entity.dart';
+import 'package:supabase_example/src/feature/to_do/widget/to_do_scope.dart';
 
 class UpdateToDo extends StatefulWidget {
   const UpdateToDo({
@@ -51,6 +52,7 @@ class _UpdateToDoState extends State<UpdateToDo> {
         child: BlocConsumer<UpdateToDoBloc, UpdateToDoState>(
           listener: (BuildContext context, UpdateToDoState state) {
             if (state.isSuccess) {
+              ToDoScope.of(context).updateToDos(state.toDoEntity!);
               Navigator.of(context).pop();
             }
           },

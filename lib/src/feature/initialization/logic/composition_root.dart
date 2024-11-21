@@ -8,6 +8,8 @@ import 'package:supabase_example/src/feature/settings/data/text_scale_repository
 import 'package:supabase_example/src/feature/settings/data/theme_datasource.dart';
 import 'package:supabase_example/src/feature/settings/data/theme_mode_codec.dart';
 import 'package:supabase_example/src/feature/settings/data/theme_repository.dart';
+import 'package:supabase_example/src/feature/to_do/bloc/fetch_to_do_check_list/fetch_to_do_check_list_bloc.dart';
+import 'package:supabase_example/src/feature/to_do/bloc/fetch_to_do_list/fetch_to_do_list_bloc.dart';
 import 'package:supabase_example/src/feature/to_do/data/provider/to_do_provider.dart';
 import 'package:supabase_example/src/feature/to_do/data/repository/to_do_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -32,7 +34,8 @@ final class CompositionRoot {
     final prefs = await SharedPreferences.getInstance();
     final supabase = await Supabase.initialize(
       url: 'https://tcuftsddmyaivqmrpxxc.supabase.co',
-      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjdWZ0c2RkbXlhaXZxbXJweHhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE1MjU0MDUsImV4cCI6MjA0NzEwMTQwNX0.zdiUrh2pkk5yjRzNplLGX9-CyftvRcTQXVeKkv3PpMc',
+      anonKey:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjdWZ0c2RkbXlhaXZxbXJweHhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE1MjU0MDUsImV4cCI6MjA0NzEwMTQwNX0.zdiUrh2pkk5yjRzNplLGX9-CyftvRcTQXVeKkv3PpMc',
     );
     final toDoDatabase = supabase.client.from('to_do');
     final toDoProvider = ToDoProviderRemoteDataNetwork(
@@ -43,7 +46,17 @@ final class CompositionRoot {
     );
     final settingsBloc = _initSettingsBloc(prefs);
 
+    final toDoListBloc = FetchToDoListBloc(
+      toDoRepository: toDoRepository,
+    );
+
+    final toDoCheckListBloc = FetchToDoCheckListBloc(
+      toDoRepository: toDoRepository,
+    );
+
     return Dependencies(
+      toDoCheckListBloc: toDoCheckListBloc,
+      toDoListBloc: toDoListBloc,
       settingsBloc: settingsBloc,
       toDoRepository: toDoRepository,
     );

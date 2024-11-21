@@ -3,9 +3,11 @@ part of 'update_to_do_bloc.dart';
 sealed class UpdateToDoState extends Equatable {
   const UpdateToDoState({
     this.message = '',
+    this.toDoEntity,
   });
 
   final String message;
+  final ToDoEntity? toDoEntity;
 
   bool get isLoading => this is _UpdateToDoProcessing;
 
@@ -21,7 +23,9 @@ sealed class UpdateToDoState extends Equatable {
     required String message,
   }) = _UpdateToDoFailure;
 
-  const factory UpdateToDoState.success() = _UpdateToDoSuccess;
+  const factory UpdateToDoState.success({
+    required ToDoEntity toDoEntity,
+  }) = _UpdateToDoSuccess;
 
   @override
   List<Object?> get props => [message];
@@ -47,6 +51,7 @@ final class _UpdateToDoFailure extends UpdateToDoState {
 
 final class _UpdateToDoSuccess extends UpdateToDoState {
   const _UpdateToDoSuccess({
+    required super.toDoEntity,
     super.message = 'Success',
   });
 }

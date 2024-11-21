@@ -11,6 +11,10 @@ sealed class FetchToDoListEvent extends Equatable {
     required int id,
   }) = _RemoveToDo;
 
+  const factory FetchToDoListEvent.update({
+    required ToDoEntity toDoEntity,
+  }) = _UpdateToDo;
+
   @override
   List<Object?> get props => [];
 }
@@ -32,4 +36,15 @@ final class _RemoveToDo extends FetchToDoListEvent {
 
   @override
   List<Object?> get props => [id];
+}
+
+final class _UpdateToDo extends FetchToDoListEvent {
+  const _UpdateToDo({
+    required this.toDoEntity,
+  });
+
+  final ToDoEntity toDoEntity;
+
+  @override
+  List<Object?> get props => [toDoEntity];
 }

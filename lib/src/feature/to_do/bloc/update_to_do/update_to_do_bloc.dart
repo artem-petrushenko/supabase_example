@@ -34,7 +34,13 @@ class UpdateToDoBloc extends Bloc<UpdateToDoEvent, UpdateToDoState> {
         title: event.title,
         description: event.description,
       );
-      emit(const UpdateToDoState.success());
+      emit(UpdateToDoState.success(
+        toDoEntity: _toDoEntity.copyWith(
+          status: event.status,
+          title: event.title,
+          description: event.description,
+        ),
+      ));
     } catch (e) {
       emit(UpdateToDoState.failure(message: e.toString()));
     } finally {

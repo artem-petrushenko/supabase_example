@@ -59,10 +59,7 @@ final class ToDoProviderRemoteDataNetwork implements ToDoProvider {
 
   @override
   Future<ToDoEntity> readById(int id) async {
-    final response = await _client
-        .select()
-        .eq('id', id)
-        .single();
+    final response = await _client.select().eq('id', id).single();
 
     return ToDoDto.fromMap(response);
   }

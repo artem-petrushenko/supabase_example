@@ -17,6 +17,7 @@ class FetchToDoListBloc extends Bloc<FetchToDoListEvent, FetchToDoListState> {
     on<FetchToDoListEvent>((event, emit) => switch (event) {
           _ToDoListFetch() => _onToDoListFetch(event, emit),
           _RemoveToDo() => _onRemoveToDo(event, emit),
+          _UpdateToDo() => _onUpdateToDo(event, emit),
         });
   }
 
@@ -52,6 +53,22 @@ class FetchToDoListBloc extends Bloc<FetchToDoListEvent, FetchToDoListState> {
       emit(FetchToDoListState.processing(toDos: toDos));
       await _toDoRepository.delete(event.id);
 
+      emit(FetchToDoListState.idle(toDos: toDos));
+    } catch (e) {
+      emit(FetchToDoListState.failure(message: e.toString(), toDos: oldToDos));
+    } finally {
+      emit(FetchToDoListState.idle(toDos: state.toDos));
+    }
+  }
+
+  Future<void> _onUpdateToDo(
+    _UpdateToDo event,
+    Emitter<FetchToDoListState> emit,
+  ) async {
+    if (state.isLoading) return;
+    final oldToDos = state.toDos;
+    try {
+      final toDos = oldToDos.map((e) => e.id == event.toDoEntity.id ? event.toDoEntity : e).toList();
       emit(FetchToDoListState.idle(toDos: toDos));
     } catch (e) {
       emit(FetchToDoListState.failure(message: e.toString(), toDos: oldToDos));

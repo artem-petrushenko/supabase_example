@@ -4,6 +4,7 @@ import 'package:supabase_example/src/feature/app/widget/material_context.dart';
 import 'package:supabase_example/src/feature/initialization/model/dependencies.dart';
 import 'package:supabase_example/src/feature/initialization/widget/dependencies_scope.dart';
 import 'package:supabase_example/src/feature/settings/widget/settings_scope.dart';
+import 'package:supabase_example/src/feature/to_do/widget/to_do_scope.dart';
 
 class App extends StatelessWidget {
   const App({required this.result, super.key});
@@ -16,7 +17,11 @@ class App extends StatelessWidget {
         dependencies: result.dependencies,
         child: SettingsScope(
           settingsBloc: result.dependencies.settingsBloc,
-          child: const MaterialContext(),
+          child: ToDoScope(
+            toDoCheckListBloc: result.dependencies.toDoCheckListBloc,
+            toDoListBloc: result.dependencies.toDoListBloc,
+            child: const MaterialContext(),
+          ),
         ),
       );
 }
